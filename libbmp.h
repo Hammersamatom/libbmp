@@ -19,7 +19,7 @@ typedef struct _bmp_header
 	unsigned int   bfSize;
 	unsigned int   bfReserved;
 	unsigned int   bfOffBits;
-	
+
 	unsigned int   biSize;
 	int            biWidth;
 	int            biHeight;
@@ -51,8 +51,8 @@ typedef struct _bmp_img
 
 // BMP_HEADER
 void            bmp_header_init_df             (bmp_header*,
-                                                const int,
-                                                const int);
+                                                int,
+                                                int);
 
 enum bmp_error  bmp_header_write               (const bmp_header*,
                                                 FILE*);
@@ -62,15 +62,15 @@ enum bmp_error  bmp_header_read                (bmp_header*,
 
 // BMP_PIXEL
 void            bmp_pixel_init                 (bmp_pixel*,
-                                                const unsigned char,
-                                                const unsigned char,
-                                                const unsigned char);
+                                                unsigned char,
+                                                unsigned char,
+                                                unsigned char);
 
 // BMP_IMG
-void            bmp_img_alloc                  (bmp_img*);
-void            bmp_img_init_df                (bmp_img*,
-                                                const int,
-                                                const int);
+int            bmp_img_alloc                  (bmp_img*);
+int            bmp_img_init_df                (bmp_img*,
+                                                int,
+                                                int);
 void            bmp_img_free                   (bmp_img*);
 
 enum bmp_error  bmp_img_write                  (const bmp_img*,
