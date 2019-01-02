@@ -14,7 +14,7 @@ enum bmp_error
 	BMP_OK = 0
 };
 
-typedef struct _bmp_header
+typedef struct
 {
 	unsigned int   bfSize;
 	unsigned int   bfReserved;
@@ -33,7 +33,7 @@ typedef struct _bmp_header
 	unsigned int   biClrImportant;
 } bmp_header;
 
-typedef struct _bmp_pixel
+typedef struct
 {
 	unsigned char blue;
 	unsigned char green;
@@ -43,7 +43,7 @@ typedef struct _bmp_pixel
 // This is faster than a function call
 #define BMP_PIXEL(r,g,b) ((bmp_pixel){(b),(g),(r)})
 
-typedef struct _bmp_img
+typedef struct
 {
 	bmp_header   img_header;
 	bmp_pixel  **img_pixels;
@@ -68,9 +68,11 @@ void            bmp_pixel_init                 (bmp_pixel*,
 
 // BMP_IMG
 int            bmp_img_alloc                  (bmp_img*);
+
 int            bmp_img_init_df                (bmp_img*,
-                                                int,
-                                                int);
+                                               int,
+                                               int);
+
 void            bmp_img_free                   (bmp_img*);
 
 enum bmp_error  bmp_img_write                  (const bmp_img*,
