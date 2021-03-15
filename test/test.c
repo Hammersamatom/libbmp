@@ -46,7 +46,7 @@ bmp_test_get_padding (void)
 		bmp_test_print_passed ("BMP_GET_PADDING");
 		return BMP_TEST_PASSED;
 	}
-	
+
 	bmp_test_print_failed ("BMP_GET_PADDING");
 	return BMP_TEST_FAILED;
 }
@@ -62,7 +62,7 @@ bmp_test_header_size (void)
 		bmp_test_print_passed ("header_size");
 		return BMP_TEST_PASSED;
 	}
-	
+
 	bmp_test_print_failed ("header_size");
 	return BMP_TEST_FAILED;
 }
@@ -72,27 +72,27 @@ bmp_test_header_init_df (void)
 {
 	int passed = BMP_TEST_PASSED;
 	bmp_header header;
-	
+
 	// Test positive height value:
 	bmp_header_init_df (&header, 100, 100);
-	
+
 	if (header.bfSize != (sizeof (bmp_pixel) * 10000) ||
 	    header.biWidth != 100 ||
 	    header.biHeight != 100)
 	{
 		passed = BMP_TEST_FAILED;
 	}
-	
+
 	// Test negative height value with padding:
 	bmp_header_init_df (&header, 102, -100);
-	
+
 	if (header.bfSize != (sizeof (bmp_pixel) * 10200) + 200 ||
 	     header.biWidth != 102 ||
 	     header.biHeight != -100)
 	{
 		passed = BMP_TEST_FAILED;
 	}
-	
+
 	// Return the result:
 	if (passed == BMP_TEST_PASSED)
 	{
@@ -110,9 +110,9 @@ static int
 bmp_test_pixel_init (void)
 {
 	bmp_pixel pxl;
-	
+
 	bmp_pixel_init (&pxl, 1, 250, 4);
-	
+
 	if (pxl.red == 1 &&
 	    pxl.green == 250 &&
 	    pxl.blue == 4)
@@ -120,7 +120,7 @@ bmp_test_pixel_init (void)
 		bmp_test_print_passed ("pixel_init");
 		return BMP_TEST_PASSED;
 	}
-	
+
 	bmp_test_print_failed ("pixel_init");
 	return BMP_TEST_FAILED;
 }
@@ -129,16 +129,16 @@ int
 main (int argc, char *argv[])
 {
 	int points = 0;
-	
+
 	printf ("LibBMP-Test v. 0.0.1 A (C) 2016 - 2017 Marc Volker Dickmann\n\n");
-	
+
 	points += bmp_test_get_padding ();
-	
+
 	points += bmp_test_header_size ();
 	points += bmp_test_header_init_df ();
-	
+
 	points += bmp_test_pixel_init ();
-	
+
 	bmp_test_print_summary (points, 4);
 	return 0;
 }

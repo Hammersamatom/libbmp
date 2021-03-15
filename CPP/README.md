@@ -1,4 +1,4 @@
-This is the C++ version of libbmp.   
+This is the C++ version of libbmp.
 Instead of just using C code inside a wrapper, it is rewritten in native C++.
 
 ### Example: Checkerboard-pattern
@@ -11,7 +11,7 @@ int
 main ()
 {
 	BmpImg img (512, 512);
-	
+
 	// Draw a checkerboard pattern:
 	// Use negative loops to improve performance
 	for (int y = 511, x; y >= 0; y--)
@@ -25,7 +25,7 @@ main ()
 			}
 		}
 	}
-	
+
 	img.write ("test.bmp");
 	return 0;
 }
@@ -41,14 +41,14 @@ int
 main ()
 {
 	BmpImg img;
-	
+
 	img.read ("test.bmp");
-	
+
 	// n - 1 because we use negative loops.
 	const int width = img.get_width () - 1;
 	const int height = img.get_height () - 1;
 	int amnt_b = 0, amnt_w = 0;
-	
+
 	// Count the amount of black and white pixels:
 	// Use negative loops to improve performance
 	for (int y = height, x; y >= 0; y--)
@@ -67,7 +67,7 @@ main ()
 			}
 		}
 	}
-	
+
 	std::cout << "Amount of black pixels:\t" << amnt_b << "\n";
 	std::cout << "Amount of white pixels:\t" << amnt_w << "\n";
 	return 0;

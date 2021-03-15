@@ -31,33 +31,33 @@ class BmpPixbuf
 		BmpPixbuf (const int width,
 		           const int height);
 		~BmpPixbuf ();
-		
+
 		void init (const int width,
 		           const int height);
-		
+
 		void set_pixel (const int x,
 		                const int y,
 		                const unsigned char r,
 		                const unsigned char g,
 		                const unsigned char b);
-		
+
 		unsigned char red_at (const int x,
 		                      const int y);
 		unsigned char green_at (const int x,
 		                        const int y);
 		unsigned char blue_at (const int x,
 		                       const int y);
-		
-		
+
+
 		void write (const int row,
 		            std::ofstream& f);
-		
+
 		void read (const int row,
 		           std::ifstream& f);
 	private:
 		size_t len_row;
 		size_t len_pixel = 3;
-		
+
 		std::vector<unsigned char> data;
 };
 
@@ -72,10 +72,10 @@ class BmpImg : public BmpPixbuf
 		BmpImg (const int width,
 		        const int height);
 		~BmpImg ();
-		
+
 		enum BmpError write (const std::string& filename);
 		enum BmpError read (const std::string& filename);
-		
+
 		int get_width (void);
 		int get_height (void);
 	private:

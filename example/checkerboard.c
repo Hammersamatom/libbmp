@@ -23,7 +23,7 @@ main (int argc, char *argv[])
 			}
 		}
 	}
-	
+
 	bmp_img_write (&img, "test.bmp");
 	bmp_img_free (&img);
 	return 0;
