@@ -36,3 +36,6 @@ example/checkerboard
 
 # Media
 *.bmp
+
+# VSCode
+.vscode/
