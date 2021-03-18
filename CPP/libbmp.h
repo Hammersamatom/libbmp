@@ -25,37 +25,23 @@ enum BmpError
 //
 // BmpPixbuf
 //
-
+// AKA. Pixel buffer
 class BmpPixbuf
 {
 	public:
-		BmpPixbuf (void);
-		BmpPixbuf (const int32_t width,
-		           const int32_t height);
-		~BmpPixbuf ();
+		BmpPixbuf(void);
+		BmpPixbuf(const int32_t width, const int32_t height);
+		~BmpPixbuf();
 
-		void init (const int32_t width,
-		           const int32_t height);
+		void init(const int32_t width, const int32_t height);
+		void set_pixel(const int32_t x, const int32_t y, const uint8_t r, const uint8_t g, const uint8_t b);
 
-		void set_pixel (const int32_t x,
-		                const int32_t y,
-		                const uint8_t r,
-		                const uint8_t g,
-		                const uint8_t b);
+		uint8_t red_at(const int32_t x, const int32_t y);
+		uint8_t green_at(const int32_t x, const int32_t y);
+		uint8_t blue_at(const int32_t x, const int32_t y);
 
-		uint8_t red_at (const int32_t x,
-		                const int32_t y);
-		uint8_t green_at (const int32_t x,
-		                  const int32_t y);
-		uint8_t blue_at (const int32_t x,
-		                 const int32_t y);
-
-
-		void write (const int32_t row,
-		            std::ofstream& f);
-
-		void read (const int32_t row,
-		           std::ifstream& f);
+		void write(const int32_t row, std::ofstream& f);
+		void read(const int32_t row, std::ifstream& f);
 	private:
 		std::size_t len_row;
 		std::size_t len_pixel = 3;
@@ -70,19 +56,18 @@ class BmpPixbuf
 class BmpImg : public BmpPixbuf
 {
 	public:
-		BmpImg (void);
-		BmpImg (const int32_t width,
-		        const int32_t height);
-		~BmpImg ();
+		BmpImg(void);
+		BmpImg(const int32_t width, const int32_t height);
+		~BmpImg();
 
-		enum BmpError write (const std::string& filename);
-		enum BmpError read (const std::string& filename);
+		enum BmpError write(const std::string& filename);
+		enum BmpError read(const std::string& filename);
 
-		int32_t get_width (void);
-		int32_t get_height (void);
+		int32_t get_width(void);
+		int32_t get_height(void);
 	private:
 		// Use a struct to read this in one call
-		struct
+		struct header_info
 		{
 			uint32_t bfSize = 0;
 			uint32_t bfReserved = 0;
