@@ -2,6 +2,8 @@
 #define __LIBBMP_H__
 
 #include <vector>
+#include <cstdint>
+#include <string>
 
 #define BMP_MAGIC 19778
 
@@ -28,37 +30,37 @@ class BmpPixbuf
 {
 	public:
 		BmpPixbuf (void);
-		BmpPixbuf (const int width,
-		           const int height);
+		BmpPixbuf (const int32_t width,
+		           const int32_t height);
 		~BmpPixbuf ();
 
-		void init (const int width,
-		           const int height);
+		void init (const int32_t width,
+		           const int32_t height);
 
-		void set_pixel (const int x,
-		                const int y,
-		                const unsigned char r,
-		                const unsigned char g,
-		                const unsigned char b);
+		void set_pixel (const int32_t x,
+		                const int32_t y,
+		                const uint8_t r,
+		                const uint8_t g,
+		                const uint8_t b);
 
-		unsigned char red_at (const int x,
-		                      const int y);
-		unsigned char green_at (const int x,
-		                        const int y);
-		unsigned char blue_at (const int x,
-		                       const int y);
+		uint8_t red_at (const int32_t x,
+		                const int32_t y);
+		uint8_t green_at (const int32_t x,
+		                  const int32_t y);
+		uint8_t blue_at (const int32_t x,
+		                 const int32_t y);
 
 
-		void write (const int row,
+		void write (const int32_t row,
 		            std::ofstream& f);
 
-		void read (const int row,
+		void read (const int32_t row,
 		           std::ifstream& f);
 	private:
-		size_t len_row;
-		size_t len_pixel = 3;
+		std::size_t len_row;
+		std::size_t len_pixel = 3;
 
-		std::vector<unsigned char> data;
+		std::vector<uint8_t> data;
 };
 
 //
@@ -69,33 +71,33 @@ class BmpImg : public BmpPixbuf
 {
 	public:
 		BmpImg (void);
-		BmpImg (const int width,
-		        const int height);
+		BmpImg (const int32_t width,
+		        const int32_t height);
 		~BmpImg ();
 
 		enum BmpError write (const std::string& filename);
 		enum BmpError read (const std::string& filename);
 
-		int get_width (void);
-		int get_height (void);
+		int32_t get_width (void);
+		int32_t get_height (void);
 	private:
 		// Use a struct to read this in one call
 		struct
 		{
-		unsigned int bfSize = 0;
-		unsigned int bfReserved = 0;
-		unsigned int bfOffBits = 54;
-		unsigned int biSize = 40;
-		int biWidth = 0;
-		int biHeight = 0;
-		unsigned short biPlanes = 1;
-		unsigned short biBitCount = 24;
-		unsigned int biCompression = 0;
-		unsigned int biSizeImage = 0;
-		int biXPelsPerMeter = 0;
-		int biYPelsPerMeter = 0;
-		unsigned int biClrUsed = 0;
-		unsigned int biClrImportant = 0;
+			uint32_t bfSize = 0;
+			uint32_t bfReserved = 0;
+			uint32_t bfOffBits = 54;
+			uint32_t biSize = 40;
+			int32_t biWidth = 0;
+			int32_t biHeight = 0;
+			uint16_t biPlanes = 1;
+			uint16_t biBitCount = 24;
+			uint32_t biCompression = 0;
+			uint32_t biSizeImage = 0;
+			int32_t biXPelsPerMeter = 0;
+			int32_t biYPelsPerMeter = 0;
+			uint32_t biClrUsed = 0;
+			uint32_t biClrImportant = 0;
 		} header;
 };
 

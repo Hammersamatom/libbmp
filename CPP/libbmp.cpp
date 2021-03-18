@@ -3,6 +3,8 @@
  */
 #include <fstream>
 #include <cmath>
+#include <cstdint>
+#include <string>
 #include "libbmp.h"
 
 //
@@ -13,8 +15,8 @@ BmpPixbuf::BmpPixbuf (void)
 {
 }
 
-BmpPixbuf::BmpPixbuf (const int width,
-                      const int height)
+BmpPixbuf::BmpPixbuf (const int32_t width,
+                      const int32_t height)
 {
 	init (width, height);
 }
@@ -25,8 +27,8 @@ BmpPixbuf::~BmpPixbuf (void)
 }
 
 void
-BmpPixbuf::init (const int width,
-                 const int height)
+BmpPixbuf::init (const int32_t width,
+                 const int32_t height)
 {
 	len_row = width * len_pixel;
 
@@ -34,48 +36,48 @@ BmpPixbuf::init (const int width,
 }
 
 void
-BmpPixbuf::set_pixel (const int x,
-                      const int y,
-                      const unsigned char r,
-                      const unsigned char g,
-                      const unsigned char b)
+BmpPixbuf::set_pixel (const int32_t x,
+                      const int32_t y,
+                      const uint8_t r,
+                      const uint8_t g,
+                      const uint8_t b)
 {
-	const size_t index = (x * len_pixel) + (y * len_row);
+	const std::size_t index = (x * len_pixel) + (y * len_row);
 	data[index] = b;
 	data[index + 1] = g;
 	data[index + 2] = r;
 }
 
-unsigned char
-BmpPixbuf::red_at (const int x,
-                   const int y)
+uint8_t
+BmpPixbuf::red_at (const int32_t x,
+                   const int32_t y)
 {
 	return data[(x * len_pixel) + (y * len_row) + 2];
 }
 
-unsigned char
-BmpPixbuf::green_at (const int x,
-                     const int y)
+uint8_t
+BmpPixbuf::green_at (const int32_t x,
+                     const int32_t y)
 {
 	return data[(x * len_pixel) + (y * len_row) + 1];
 }
 
-unsigned char
-BmpPixbuf::blue_at (const int x,
-                    const int y)
+uint8_t
+BmpPixbuf::blue_at (const int32_t x,
+                    const int32_t y)
 {
 	return data[(x * len_pixel) + (y * len_row)];
 }
 
 void
-BmpPixbuf::write (const int row,
+BmpPixbuf::write (const int32_t row,
                   std::ofstream& f)
 {
 	f.write (reinterpret_cast<char*> (&data[row * len_row]), len_row);
 }
 
 void
-BmpPixbuf::read (const int row,
+BmpPixbuf::read (const int32_t row,
                  std::ifstream& f)
 {
 	f.read (reinterpret_cast<char*> (&data[row * len_row]), len_row);
@@ -89,8 +91,8 @@ BmpImg::BmpImg (void)
 {
 }
 
-BmpImg::BmpImg (const int width,
-                const int height) : BmpPixbuf (width, std::abs (height))
+BmpImg::BmpImg (const int32_t width,
+                const int32_t height) : BmpPixbuf (width, std::abs (height))
 {
 	// INIT the header with default values
 	header.bfSize = (3 * width + BMP_GET_PADDING (width))
@@ -103,13 +105,13 @@ BmpImg::~BmpImg (void)
 {
 }
 
-int
+int32_t
 BmpImg::get_width (void)
 {
 	return header.biWidth;
 }
 
-int
+int32_t
 BmpImg::get_height (void)
 {
 	return header.biHeight;
@@ -125,17 +127,17 @@ BmpImg::write (const std::string& filename)
 		return BMP_FILE_NOT_OPENED;
 
 	// Since an adress must be passed to fwrite, create a variable!
-	const unsigned short magic = BMP_MAGIC;
+	const uint16_t magic = BMP_MAGIC;
 
 	f_img.write (reinterpret_cast<const char*>(&magic), sizeof (magic));
 	f_img.write (reinterpret_cast<const char*>(&header), sizeof (header));
 
 	// Select the mode (bottom-up or top-down)
-	const int h = std::abs (header.biHeight);
-	const int offset = (header.biHeight > 0 ? 0 : h - 1);
-	const int padding = BMP_GET_PADDING (header.biWidth);
+	const int32_t h = std::abs (header.biHeight);
+	const int32_t offset = (header.biHeight > 0 ? 0 : h - 1);
+	const int32_t padding = BMP_GET_PADDING (header.biWidth);
 
-	for (int y = h - 1; y >= 0; y--)
+	for (int32_t y = h - 1; y >= 0; y--)
 	{
 		// Write a whole row of pixels into the file
 		BmpPixbuf::write ((int)std::abs (y - offset), f_img);
@@ -159,7 +161,7 @@ BmpImg::read (const std::string& filename)
 		return BMP_FILE_NOT_OPENED;
 
 	// Since an adress must be passed to fread, create a variable!
-	unsigned short magic;
+	uint16_t magic;
 
 	// Check if its an bmp file by comparing the magic nbr
 	f_img.read(reinterpret_cast<char*>(&magic), sizeof (magic));
@@ -174,14 +176,14 @@ BmpImg::read (const std::string& filename)
 	f_img.read (reinterpret_cast<char*>(&header), sizeof (header));
 
 	// Select the mode (bottom-up or top-down)
-	const int h = std::abs (header.biHeight);
-	const int offset = (header.biHeight > 0 ? 0 : h - 1);
-	const int padding = BMP_GET_PADDING (header.biWidth);
+	const int32_t h = std::abs (header.biHeight);
+	const int32_t offset = (header.biHeight > 0 ? 0 : h - 1);
+	const int32_t padding = BMP_GET_PADDING (header.biWidth);
 
 	// Allocate the pixel buffer
 	BmpPixbuf::init (header.biWidth, h);
 
-	for (int y = h - 1; y >= 0; y--)
+	for (int32_t y = h - 1; y >= 0; y--)
 	{
 		// Read a whole row of pixels from the file
 		BmpPixbuf::read ((int)std::abs (y - offset), f_img);
