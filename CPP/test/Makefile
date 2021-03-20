@@ -1,7 +1,7 @@
 CC = g++
 OBJECTS = ../libbmp.cpp test.cpp
 LIBS =
-CFLAGS = -Wall -Wextra -O2
+CFLAGS = -Wall -Werror -Wextra -O2
 BINDIR = $(DESTDIR)/usr/bin
 NAME = test
 
